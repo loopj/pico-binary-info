@@ -4,8 +4,17 @@
 #include <stdint.h>
 
 /**
- * Pico Binary Info error codes. Functions return the negation of these, so 0
- * is success and a failure is e.g. -PICO_BI_ENOTFOUND.
+ * @defgroup errors Error Handling
+ *
+ * This library uses negative numbered constants for error codes. As a rule of
+ * thumb, whenever an function returns an integer, a negative number will imply
+ * an error.
+ *
+ * @{
+ */
+
+/**
+ * Library error codes, returned negated (e.g. -PICO_BI_ENOTFOUND).
  */
 enum pico_binary_info_error {
   /** No record found matching that id */
@@ -23,6 +32,11 @@ enum pico_binary_info_error {
   /** A record's address could not be resolved to data within the image */
   PICO_BI_EBADADDR,
 };
+
+/**
+ * @}
+ */
+
 
 /**
  * Struct representing a parsed pico binary info header.
@@ -47,7 +61,15 @@ struct pico_binary_info {
   long mapping_off;
 };
 
-/*
+/**
+ * @defgroup initialization Initialization
+ *
+ * Functions for initializing a `pico_binary_info` struct.
+ *
+ * @{
+ */
+
+/**
  * Initialize a pico_binary_info struct using a pointer to a pico binary image
  * which is in memory, or a memory mapped file.
  *
@@ -61,7 +83,7 @@ struct pico_binary_info {
  */
 int pico_binary_info_init(struct pico_binary_info *info, const uint8_t *image, size_t len);
 
-/*
+/**
  * Initialize a pico_binary_info struct using a file handle.
  *
  * Use this on systems where posix/newlib `open  and `read` are available.
@@ -73,24 +95,34 @@ int pico_binary_info_init(struct pico_binary_info *info, const uint8_t *image, s
  */
 int pico_binary_info_init_fd(struct pico_binary_info *info, int fd, size_t len);
 
-/*
- * Fetch the integer value of an id-and-int record for the given tag.
+/**
+ * @}
+ */
+
+/**
+ * @defgroup fetching Low-Level Fetching
+ *
+ * Low-level functions for fetching raw field values.
+ *
+ * @{
+ */
+
+/**
+ * Fetch the integer value of an id-and-int record for the given tag
  *
  * @param info the initialized binary info struct
- * @param tag the 16-bit record tag (namespace); the well-known Raspberry Pi
- *            records are also available via the pico_binary_info_get_* wrappers
+ * @param tag the 16-bit record tag
  * @param id the record id
  * @param out where to store the integer
  * @returns 0 for success, negative error code on failure
  */
 int pico_binary_info_get_int(struct pico_binary_info *info, uint16_t tag, uint32_t id, uint32_t *out);
 
-/*
- * Fetch the string value of an id-and-string record for the given tag.
+/**
+ * Fetch the string value of an id-and-string record for the given tag
  *
  * @param info the initialized binary info struct
- * @param tag the 16-bit record tag (namespace); the well-known Raspberry Pi
- *            records are also available via the pico_binary_info_get_* wrappers
+ * @param tag the 16-bit record tag
  * @param id the record id
  * @param out where to store the string
  * @param out_len the size of `out` string buffer
@@ -98,8 +130,20 @@ int pico_binary_info_get_int(struct pico_binary_info *info, uint16_t tag, uint32
  */
 int pico_binary_info_get_string(struct pico_binary_info *info, uint16_t tag, uint32_t id, char *out, size_t out_len);
 
-/*
- * Fetch the program name string (BINARY_INFO_ID_RP_PROGRAM_NAME).
+/**
+ * @}
+ */
+
+/**
+ * @defgroup helpers Fetching Common Field Values
+ *
+ * Convenience functions for fetching common field values
+ *
+ * @{
+ */
+
+/**
+ * Fetch the program name string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -108,8 +152,8 @@ int pico_binary_info_get_string(struct pico_binary_info *info, uint16_t tag, uin
  */
 int pico_binary_info_get_program_name(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the program version string (BINARY_INFO_ID_RP_PROGRAM_VERSION_STRING).
+/**
+ * Fetch the program version string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -118,8 +162,8 @@ int pico_binary_info_get_program_name(struct pico_binary_info *info, char *out, 
  */
 int pico_binary_info_get_program_version(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the program build date string (BINARY_INFO_ID_RP_PROGRAM_BUILD_DATE_STRING).
+/**
+ * Fetch the program build date string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -128,8 +172,8 @@ int pico_binary_info_get_program_version(struct pico_binary_info *info, char *ou
  */
 int pico_binary_info_get_program_build_date(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the program url string (BINARY_INFO_ID_RP_PROGRAM_URL).
+/**
+ * Fetch the program url string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -138,8 +182,8 @@ int pico_binary_info_get_program_build_date(struct pico_binary_info *info, char 
  */
 int pico_binary_info_get_program_url(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the program description string (BINARY_INFO_ID_RP_PROGRAM_DESCRIPTION).
+/**
+ * Fetch the program description string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -148,8 +192,8 @@ int pico_binary_info_get_program_url(struct pico_binary_info *info, char *out, s
  */
 int pico_binary_info_get_program_description(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch a program feature string (BINARY_INFO_ID_RP_PROGRAM_FEATURE).
+/**
+ * Fetch a program feature string
  *
  * A binary may carry several feature records; this returns the first one found.
  *
@@ -160,8 +204,8 @@ int pico_binary_info_get_program_description(struct pico_binary_info *info, char
  */
 int pico_binary_info_get_program_feature(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch a program build attribute string (BINARY_INFO_ID_RP_PROGRAM_BUILD_ATTRIBUTE).
+/**
+ * Fetch a program build attribute string
  *
  * A binary may carry several build attribute records; this returns the first one found.
  *
@@ -172,8 +216,8 @@ int pico_binary_info_get_program_feature(struct pico_binary_info *info, char *ou
  */
 int pico_binary_info_get_program_build_attribute(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the SDK version string (BINARY_INFO_ID_RP_SDK_VERSION).
+/**
+ * Fetch the SDK version string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -182,8 +226,8 @@ int pico_binary_info_get_program_build_attribute(struct pico_binary_info *info, 
  */
 int pico_binary_info_get_sdk_version(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the pico board string (BINARY_INFO_ID_RP_PICO_BOARD).
+/**
+ * Fetch the pico board string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -192,8 +236,8 @@ int pico_binary_info_get_sdk_version(struct pico_binary_info *info, char *out, s
  */
 int pico_binary_info_get_pico_board(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the boot2 name string (BINARY_INFO_ID_RP_BOOT2_NAME).
+/**
+ * Fetch the boot2 name string
  *
  * @param info the initialized binary info struct
  * @param out where to store the string
@@ -202,11 +246,15 @@ int pico_binary_info_get_pico_board(struct pico_binary_info *info, char *out, si
  */
 int pico_binary_info_get_boot2_name(struct pico_binary_info *info, char *out, size_t out_len);
 
-/*
- * Fetch the binary end address (BINARY_INFO_ID_RP_BINARY_END).
+/**
+ * Fetch the binary end address
  *
  * @param info the initialized binary info struct
  * @param out where to store the integer
  * @returns 0 for success, negative error code on failure
  */
 int pico_binary_info_get_binary_end(struct pico_binary_info *info, uint32_t *out);
+
+/**
+ * @}
+ */

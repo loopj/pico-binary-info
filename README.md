@@ -1,4 +1,4 @@
-# Pi Pico Binary Info Parser
+# pico-binary-info
 
 Portable C library to extract data from the "binary info" fields of a Pi Pico binary.
 
