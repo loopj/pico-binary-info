@@ -36,3 +36,9 @@ See [`examples/`](examples/) for example usage.
 cmake -Bbuild && cmake --build build
 ctest --test-dir build --output-on-failure
 ```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+Vendored code in [`src/vendor/`](src/vendor/) is copyright Raspberry Pi (Trading) Ltd., and is licensed under the BSD-3-Clause license.
