@@ -26,6 +26,8 @@ if (pico_binary_info_get_program_version(&info, buf, sizeof(buf)) == 0)
   printf("Version: %s\n", buf);
 ```
 
+See the [API Reference](http://loopj.com/pico-binary-info/topics.html) for full documentation.
+
 ## Examples
 
 See [`examples/`](examples/) for example usage.
