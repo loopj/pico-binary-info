@@ -2,32 +2,31 @@
 
 Portable C library to extract data from the "binary info" fields of a Pi Pico binary.
 
+Currently supports string and integer field type, and provides wrappers for common field types such as program version, app name, and board name.
+
 ## Usage
 
+First, initialize a binary info struct from a memory buffer or file descriptor:
+
 ```c
-#include <pico_binary_info.h>
+// From an in-memory buffer (or memory mapped file)
+struct pico_binary_info info;
+pico_binary_info_init(&info, image, size);
 
-int main() {
-  // Load the binary image into memory
-  // uint8_t *image = ...
-  
-  struct pico_binary_info info;
-  int rc = pico_binary_info_init(&info, image, sizeof(image));
-  if (rc == 0) {
-    char buf[256];
-    
-    if (pico_binary_info_get_string(&info, BINARY_INFO_ID_RP_PROGRAM_NAME, (uint8_t *)buf, sizeof(buf)) == 0)
-      printf("Name: %s\n", buf);
-
-    if (pico_binary_info_get_string(&info, BINARY_INFO_ID_RP_PROGRAM_VERSION, (uint8_t *)buf, sizeof(buf)) == 0)
-      printf("Version: %s\n", buf);
-  } else {
-    printf("Could not parse binary info");
-  }
-}
+// From a file descriptor (posix and newlib friendly)
+struct pico_binary_info info;
+pico_binary_info_init_fd(&info, fd, size);
 ```
 
-There's also a `pico_binary_info_init_fd()` version that takes a file descriptor instead of a memory buffer.
+Then, use the `pico_binary_info_*()` functions to extract data from the binary info struct, for example:
+
+```c
+char buf[256];
+if (pico_binary_info_get_program_version(&info, buf, sizeof(buf)) == 0)
+  printf("Version: %s\n", buf);
+```
+
+## Examples
 
 See [`examples/`](examples/) for example usage.
 

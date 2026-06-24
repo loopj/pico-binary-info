@@ -51,15 +51,15 @@ int main(int argc, char **argv)
   uint32_t end;
 
   // Print the values
-  if (pico_binary_info_get_string(&info, BINARY_INFO_ID_RP_PROGRAM_NAME, (uint8_t *)s, sizeof(s)) == 0)
+  if (pico_binary_info_get_program_name(&info, s, sizeof(s)) == 0)
     printf(" %-14s %s\n", "name:", s);
 
-  if (pico_binary_info_get_string(&info, BINARY_INFO_ID_RP_PROGRAM_VERSION_STRING, (uint8_t *)s, sizeof(s)) == 0)
+  if (pico_binary_info_get_program_version(&info, s, sizeof(s)) == 0)
     printf(" %-14s %s\n", "version:", s);
 
   printf(" %-14s 0x%08x\n", "binary start:", FLASH_BASE);
 
-  if (pico_binary_info_get_int(&info, BINARY_INFO_ID_RP_BINARY_END, &end) == 0)
+  if (pico_binary_info_get_binary_end(&info, &end) == 0)
     printf(" %-14s 0x%08x\n", "binary end:", end);
 
   // Free the in-memory copy of the file

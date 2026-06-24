@@ -19,13 +19,30 @@ static void check_simple(struct pico_binary_info *info)
   char buf[64];
   int rc;
 
-  rc = pico_binary_info_get_string(info, BINARY_INFO_ID_RP_PROGRAM_NAME, (uint8_t *)buf, sizeof buf);
+  rc = pico_binary_info_get_program_name(info, buf, sizeof buf);
   TEST_ASSERT_EQUAL_INT(0, rc);
   TEST_ASSERT_EQUAL_STRING("simple", buf);
 
-  rc = pico_binary_info_get_string(info, BINARY_INFO_ID_RP_PROGRAM_VERSION_STRING, (uint8_t *)buf, sizeof buf);
+  rc = pico_binary_info_get_program_version(info, buf, sizeof buf);
   TEST_ASSERT_EQUAL_INT(0, rc);
   TEST_ASSERT_EQUAL_STRING("1.2.3", buf);
+
+  // Records are keyed on (tag, id): the program_name id (0x02031c86) exists
+  // under the Raspberry Pi tag ('R','P'), so querying it under a different tag
+  // must not match. 0x5858 is the tag built from ('X','X').
+  rc = pico_binary_info_get_string(info, 0x5858, 0x02031c86u, buf, sizeof buf);
+  TEST_ASSERT_EQUAL_INT(-PICO_BI_ENOTFOUND, rc);
+
+  // The SDK auto-adds a pico_board string; it begins with "pico".
+  rc = pico_binary_info_get_pico_board(info, buf, sizeof buf);
+  TEST_ASSERT_EQUAL_INT(0, rc);
+  TEST_ASSERT_EQUAL_STRING_LEN("pico", buf, 4);
+
+  // The SDK auto-adds a binary_end int pointing into flash (>= FLASH_BASE).
+  uint32_t binary_end = 0;
+  rc = pico_binary_info_get_binary_end(info, &binary_end);
+  TEST_ASSERT_EQUAL_INT(0, rc);
+  TEST_ASSERT_GREATER_OR_EQUAL_UINT32(0x10000000u, binary_end);
 }
 
 struct fixture {

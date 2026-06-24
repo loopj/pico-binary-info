@@ -3,14 +3,17 @@
 
 #include "pico_binary_info.h"
 
-// Start/end magic numbers for binary info section
-#define BINARY_INFO_MARKER_START        0x7188ebf2u
-#define BINARY_INFO_MARKER_END          0xe71aa390u
+// The vendored structure.h uses `uint` in BINARY_INFO_MAKE_TAG; the SDK supplies
+// this typedef, but a standalone/strict build may not, so define it here. (A
+// duplicate, identical typedef is permitted, so this is safe where uint exists.)
+// Remove once the upstream fix lands: https://github.com/raspberrypi/pico-sdk/pull/3029
+typedef unsigned int uint;
 
-// Record types and tags
-#define BINARY_INFO_TAG_RASPBERRY_PI    0x5052
-#define BINARY_INFO_TYPE_ID_AND_INT     0x0005
-#define BINARY_INFO_TYPE_ID_AND_STRING  0x0006
+// Record markers, types, tags and ids, vendored verbatim from the pico-sdk.
+// We use only the #defines; the structs are unused because we parse fields
+// byte-by-byte to stay endianness-independent.
+#include "vendor/defs.h"
+#include "vendor/structure.h"
 
 // Flash
 #define FLASH_BASE  0x10000000u
@@ -93,8 +96,8 @@ static size_t addr_to_image_offset(const struct pico_binary_info *info, uint32_t
   return (size_t)-1;
 }
 
-// Find the record with the given id, writing its type to *type_out; returns its image offset or (size_t)-1.
-static size_t find_record(const struct pico_binary_info *info, uint32_t id, uint16_t *type_out)
+// Find the record with the given tag and id, writing its type to *type_out; returns its image offset or (size_t)-1.
+static size_t find_record(const struct pico_binary_info *info, uint16_t tag, uint32_t id, uint16_t *type_out)
 {
   for (size_t table_pos = info->table_off; table_pos + 4 <= info->table_end; table_pos += 4) {
     // Read the address bytes from the table
@@ -113,9 +116,9 @@ static size_t find_record(const struct pico_binary_info *info, uint32_t id, uint
       continue;
 
     // Check the tag and id match
-    uint16_t type = get_le16(header);
-    uint16_t tag  = get_le16(header + 2);
-    if (tag != BINARY_INFO_TAG_RASPBERRY_PI)
+    uint16_t type    = get_le16(header);
+    uint16_t rec_tag = get_le16(header + 2);
+    if (rec_tag != tag)
       continue;
     if (get_le32(header + 4) != id)
       continue;
@@ -187,11 +190,11 @@ int pico_binary_info_init_fd(struct pico_binary_info *info, int fd, size_t len)
   return parse_header(info);
 }
 
-int pico_binary_info_get_int(struct pico_binary_info *info, uint32_t id, uint32_t *out)
+int pico_binary_info_get_int(struct pico_binary_info *info, uint16_t tag, uint32_t id, uint32_t *out)
 {
-  // Look up the record for the given id
+  // Look up the record for the given tag and id
   uint16_t type;
-  size_t rec_off = find_record(info, id, &type);
+  size_t rec_off = find_record(info, tag, id, &type);
   if (rec_off == (size_t)-1)
     return -PICO_BI_ENOTFOUND;
 
@@ -208,11 +211,11 @@ int pico_binary_info_get_int(struct pico_binary_info *info, uint32_t id, uint32_
   return 0;
 }
 
-int pico_binary_info_get_string(struct pico_binary_info *info, uint32_t id, uint8_t *out, size_t out_len)
+int pico_binary_info_get_string(struct pico_binary_info *info, uint16_t tag, uint32_t id, char *out, size_t out_len)
 {
-  // Look up the record for the given id
+  // Look up the record for the given tag and id
   uint16_t type;
-  size_t rec_off = find_record(info, id, &type);
+  size_t rec_off = find_record(info, tag, id, &type);
   if (rec_off == (size_t)-1)
     return -PICO_BI_ENOTFOUND;
 
@@ -234,9 +237,64 @@ int pico_binary_info_get_string(struct pico_binary_info *info, uint32_t id, uint
   size_t count = info->image_len - str_off;
   if (count > out_len - 1)
     count = out_len - 1;
-  if (read_image_bytes(info, str_off, out, count) != 0)
+  if (read_image_bytes(info, str_off, (uint8_t *)out, count) != 0)
     return -PICO_BI_EBADADDR;
   out[count] = '\0';
 
   return 0;
+}
+
+int pico_binary_info_get_program_name(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_NAME, out, out_len);
+}
+
+int pico_binary_info_get_program_version(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_VERSION_STRING, out, out_len);
+}
+
+int pico_binary_info_get_program_build_date(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_BUILD_DATE_STRING, out, out_len);
+}
+
+int pico_binary_info_get_program_url(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_URL, out, out_len);
+}
+
+int pico_binary_info_get_program_description(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_DESCRIPTION, out, out_len);
+}
+
+int pico_binary_info_get_program_feature(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_FEATURE, out, out_len);
+}
+
+int pico_binary_info_get_program_build_attribute(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PROGRAM_BUILD_ATTRIBUTE, out, out_len);
+}
+
+int pico_binary_info_get_sdk_version(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_SDK_VERSION, out, out_len);
+}
+
+int pico_binary_info_get_pico_board(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_PICO_BOARD, out, out_len);
+}
+
+int pico_binary_info_get_boot2_name(struct pico_binary_info *info, char *out, size_t out_len)
+{
+  return pico_binary_info_get_string(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_BOOT2_NAME, out, out_len);
+}
+
+int pico_binary_info_get_binary_end(struct pico_binary_info *info, uint32_t *out)
+{
+  return pico_binary_info_get_int(info, BINARY_INFO_TAG_RASPBERRY_PI, BINARY_INFO_ID_RP_BINARY_END, out);
 }
