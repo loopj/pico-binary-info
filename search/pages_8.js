@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vendored_20headers_0',['Vendored headers',['..//home/runner/work/pico-binary-info/pico-binary-info/src/vendor/README.md#autotoc_md4',1,'']]]
+  ['usage_0',['Usage',['../index.html#autotoc_md1',1,'']]]
 ];

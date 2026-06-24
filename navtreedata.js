@@ -28,6 +28,7 @@ var NAVTREE =
     [ "Usage", "index.html#autotoc_md1", null ],
     [ "Examples", "index.html#autotoc_md2", null ],
     [ "Running Tests", "index.html#autotoc_md3", null ],
+    [ "License", "index.html#autotoc_md4", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
