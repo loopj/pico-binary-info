@@ -2,6 +2,8 @@
 
 Portable C library to extract data from the "binary info" fields of a Pi Pico binary.
 
+This is intended to be used on host systems which may wish to verify/validate binary images, for example before a custom DFU process. Data is parsed in an endianness-independent manner.
+
 Currently supports string and integer field type, and provides wrappers for common field types such as program version, app name, and board name.
 
 ## Usage
@@ -43,4 +45,4 @@ ctest --test-dir build --output-on-failure
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Vendored code in [`src/vendor/`](src/vendor/) is copyright Raspberry Pi (Trading) Ltd., and is licensed under the BSD-3-Clause license.
+Vendored code in [`include/pico/binary_info/`](include/pico/binary_info/) is copyright Raspberry Pi (Trading) Ltd., and is licensed under the BSD-3-Clause license.

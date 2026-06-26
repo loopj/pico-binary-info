@@ -12,8 +12,8 @@ typedef unsigned int uint;
 // Record markers, types, tags and ids, vendored verbatim from the pico-sdk.
 // We use only the #defines; the structs are unused because we parse fields
 // byte-by-byte to stay endianness-independent.
-#include "vendor/defs.h"
-#include "vendor/structure.h"
+#include "pico/binary_info/defs.h"
+#include "pico/binary_info/structure.h"
 
 // Flash
 #define FLASH_BASE  0x10000000u
