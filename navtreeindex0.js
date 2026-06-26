@@ -2,10 +2,10 @@ var NAVTREEINDEX0 =
 {
 "annotated.html":[5,0],
 "classes.html":[5,1],
-"defs_8h_source.html":[6,0,1,0,0],
-"dir_68267d1309a1af8e8297ef4c3efbcdba.html":[6,0,1],
-"dir_90da97247338d9e3ac7f8bf7df478e67.html":[6,0,1,0],
+"defs_8h_source.html":[6,0,0,0,0,0],
+"dir_31e520e658d6714572a6aedb0933a219.html":[6,0,0,0,0],
 "dir_d44c64559bbebec7f509842c48db8b23.html":[6,0,0],
+"dir_f2811b1da0d59ba7df6f203a3f6b7115.html":[6,0,0,0],
 "files.html":[6,0],
 "group__errors.html":[4,0],
 "group__errors.html#ga354a04b7a88760b7518403abea9994cd":[4,0,0],
@@ -38,7 +38,7 @@ var NAVTREEINDEX0 =
 "index.html#autotoc_md3":[2],
 "index.html#autotoc_md4":[3],
 "pages.html":[],
-"pico__binary__info_8h_source.html":[6,0,0,0],
+"pico__binary__info_8h_source.html":[6,0,0,1],
 "struct__binary__info__block__device.html":[5,0,0],
 "struct__binary__info__core.html":[5,0,1],
 "struct__binary__info__id__and__int.html":[5,0,2],
@@ -54,6 +54,6 @@ var NAVTREEINDEX0 =
 "struct__binary__info__raw__data.html":[5,0,12],
 "struct__binary__info__sized__data.html":[5,0,13],
 "structpico__binary__info.html":[5,0,14],
-"structure_8h_source.html":[6,0,1,0,1],
+"structure_8h_source.html":[6,0,0,0,0,1],
 "topics.html":[4]
 };

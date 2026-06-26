@@ -108,6 +108,7 @@ $(function(){initNavTree('index.html','',''); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
 <p>Portable C library to extract data from the "binary info" fields of a Pi Pico binary.</p>
+<p>This is intended to be used on host systems which may wish to verify/validate binary images, for example before a custom DFU process. Data is parsed in an endianness-independent manner.</p>
 <p>Currently supports string and integer field type, and provides wrappers for common field types such as program version, app name, and board name.</p>
 <h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 Usage</h1>
@@ -138,7 +139,7 @@ Running Tests</h1>
 </div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
 License</h1>
 <p>This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.</p>
-<p>Vendored code in <a href="src/vendor/"><span class="tt">src/vendor/</span></a> is copyright Raspberry Pi (Trading) Ltd., and is licensed under the BSD-3-Clause license. </p>
+<p>Vendored code in <a href="include/pico/binary_info/"><span class="tt">include/pico/binary_info/</span></a> is copyright Raspberry Pi (Trading) Ltd., and is licensed under the BSD-3-Clause license. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
