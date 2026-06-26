@@ -6,6 +6,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+// structure.h's BINARY_INFO_MAKE_TAG uses `uint`; supply it for a standalone
+// build, mirroring src/pico_binary_info.c. (A duplicate identical typedef is
+// permitted where `uint` already exists.)
+typedef unsigned int uint;
+#include "pico/binary_info/structure.h"
+
+// A custom application tag and id, mirroring tests/fixtures/src/simple/main.c.
+#define BI_TAG_APP        BINARY_INFO_MAKE_TAG('J', 'S')
+#define BI_ID_APP_VERSION 0x00012345u
+#define APP_VERSION       0x00010203u  // (1 << 16) | (2 << 8) | 3
+
 void setUp(void)
 {
 }
@@ -27,10 +38,9 @@ static void check_simple(struct pico_binary_info *info)
   TEST_ASSERT_EQUAL_INT(0, rc);
   TEST_ASSERT_EQUAL_STRING("1.2.3", buf);
 
-  // Records are keyed on (tag, id): the program_name id (0x02031c86) exists
-  // under the Raspberry Pi tag ('R','P'), so querying it under a different tag
-  // must not match. 0x5858 is the tag built from ('X','X').
-  rc = pico_binary_info_get_string(info, 0x5858, 0x02031c86u, buf, sizeof buf);
+  // Records are keyed on (tag, id), so the program_name id under a wrong tag must not match.
+  rc = pico_binary_info_get_string(info, BINARY_INFO_MAKE_TAG('X', 'X'),
+                                   BINARY_INFO_ID_RP_PROGRAM_NAME, buf, sizeof buf);
   TEST_ASSERT_EQUAL_INT(-PICO_BI_ENOTFOUND, rc);
 
   // The SDK auto-adds a pico_board string; it begins with "pico".
@@ -43,6 +53,20 @@ static void check_simple(struct pico_binary_info *info)
   rc = pico_binary_info_get_binary_end(info, &binary_end);
   TEST_ASSERT_EQUAL_INT(0, rc);
   TEST_ASSERT_GREATER_OR_EQUAL_UINT32(0x10000000u, binary_end);
+
+  // Decode the custom-tag int field the fixture emits.
+  uint32_t app_version = 0;
+  rc = pico_binary_info_get_int(info, BI_TAG_APP, BI_ID_APP_VERSION, &app_version);
+  TEST_ASSERT_EQUAL_INT(0, rc);
+  TEST_ASSERT_EQUAL_HEX32(APP_VERSION, app_version);
+
+  // The same id under the wrong tag must not match (records are keyed on tag+id).
+  rc = pico_binary_info_get_int(info, BINARY_INFO_TAG_RASPBERRY_PI, BI_ID_APP_VERSION, &app_version);
+  TEST_ASSERT_EQUAL_INT(-PICO_BI_ENOTFOUND, rc);
+
+  // It is an int record, so requesting it as a string is the wrong type.
+  rc = pico_binary_info_get_string(info, BI_TAG_APP, BI_ID_APP_VERSION, buf, sizeof buf);
+  TEST_ASSERT_EQUAL_INT(-PICO_BI_EWRONGTYPE, rc);
 }
 
 struct fixture {
