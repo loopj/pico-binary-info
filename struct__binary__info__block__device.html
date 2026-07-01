@@ -106,26 +106,39 @@ $(function(){initNavTree('struct__binary__info__block__device.html','',''); });
   <div class="headertitle"><div class="title">_binary_info_block_device Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Binary info entry describing a block device in the binary.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="structure_8h_source.html">structure.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a32f851b0f5e29645c1f196fec5136d33" id="r_a32f851b0f5e29645c1f196fec5136d33"><td class="memItemLeft" align="right" valign="top"><a id="a32f851b0f5e29645c1f196fec5136d33" name="a32f851b0f5e29645c1f196fec5136d33"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>bi_ptr_of</b> (const char) name</td></tr>
+<tr class="memdesc:a32f851b0f5e29645c1f196fec5136d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">optional static name (independent of what is formatted) <br /></td></tr>
 <tr class="memitem:a497a7300ae38f52608b159a1c38cfdce" id="r_a497a7300ae38f52608b159a1c38cfdce"><td class="memItemLeft" align="right" valign="top"><a id="a497a7300ae38f52608b159a1c38cfdce" name="a497a7300ae38f52608b159a1c38cfdce"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>bi_ptr_of</b> (<a class="el" href="struct__binary__info__core.html">binary_info_t</a>) extra</td></tr>
+<tr class="memdesc:a497a7300ae38f52608b159a1c38cfdce"><td class="mdescLeft">&#160;</td><td class="mdescRight">additional info <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a200b6971a17ea5e5eac5c824dcf4df87" id="r_a200b6971a17ea5e5eac5c824dcf4df87"><td class="memItemLeft" align="right" valign="top"><a id="a200b6971a17ea5e5eac5c824dcf4df87" name="a200b6971a17ea5e5eac5c824dcf4df87"></a>
 struct <a class="el" href="struct__binary__info__core.html">_binary_info_core</a>&#160;</td><td class="memItemRight" valign="bottom"><b>core</b></td></tr>
+<tr class="memdesc:a200b6971a17ea5e5eac5c824dcf4df87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common binary info header. <br /></td></tr>
 <tr class="memitem:a23c1c687f49d2f73fd37f0bbaee604af" id="r_a23c1c687f49d2f73fd37f0bbaee604af"><td class="memItemLeft" align="right" valign="top"><a id="a23c1c687f49d2f73fd37f0bbaee604af" name="a23c1c687f49d2f73fd37f0bbaee604af"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>address</b></td></tr>
+<tr class="memdesc:a23c1c687f49d2f73fd37f0bbaee604af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start address of the block device in flash. <br /></td></tr>
 <tr class="memitem:a5ba86cdee219a12b6030cee017f0c7ff" id="r_a5ba86cdee219a12b6030cee017f0c7ff"><td class="memItemLeft" align="right" valign="top"><a id="a5ba86cdee219a12b6030cee017f0c7ff" name="a5ba86cdee219a12b6030cee017f0c7ff"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
+<tr class="memdesc:a5ba86cdee219a12b6030cee017f0c7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the block device in bytes. <br /></td></tr>
 <tr class="memitem:a51b573f0e870b3fbadeb4031390965fd" id="r_a51b573f0e870b3fbadeb4031390965fd"><td class="memItemLeft" align="right" valign="top"><a id="a51b573f0e870b3fbadeb4031390965fd" name="a51b573f0e870b3fbadeb4031390965fd"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="memdesc:a51b573f0e870b3fbadeb4031390965fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block device capability flags (BINARY_INFO_BLOCK_DEV_FLAG_*) <br /></td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Binary info entry describing a block device in the binary. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/pico/binary_info/<a class="el" href="structure_8h_source.html">structure.h</a></li>
 </ul>
 </div><!-- contents -->

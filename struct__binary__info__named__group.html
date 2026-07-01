@@ -106,26 +106,40 @@ $(function(){initNavTree('struct__binary__info__named__group.html','',''); });
   <div class="headertitle"><div class="title">_binary_info_named_group Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Binary info entry defining a named group of related binary info entries.  
+ <a href="#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="structure_8h_source.html">structure.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8173fe46ffb2eeff889124d580328873" id="r_a8173fe46ffb2eeff889124d580328873"><td class="memItemLeft" align="right" valign="top"><a id="a8173fe46ffb2eeff889124d580328873" name="a8173fe46ffb2eeff889124d580328873"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>bi_ptr_of</b> (const char) label</td></tr>
+<tr class="memdesc:a8173fe46ffb2eeff889124d580328873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the null-terminated group label. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:af2fb51f6651843f7dcb14b1212e64e41" id="r_af2fb51f6651843f7dcb14b1212e64e41"><td class="memItemLeft" align="right" valign="top"><a id="af2fb51f6651843f7dcb14b1212e64e41" name="af2fb51f6651843f7dcb14b1212e64e41"></a>
 struct <a class="el" href="struct__binary__info__core.html">_binary_info_core</a>&#160;</td><td class="memItemRight" valign="bottom"><b>core</b></td></tr>
+<tr class="memdesc:af2fb51f6651843f7dcb14b1212e64e41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common binary info header. <br /></td></tr>
 <tr class="memitem:aee23d5bee8bbb5fb93be0bb3f59da154" id="r_aee23d5bee8bbb5fb93be0bb3f59da154"><td class="memItemLeft" align="right" valign="top"><a id="aee23d5bee8bbb5fb93be0bb3f59da154" name="aee23d5bee8bbb5fb93be0bb3f59da154"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>parent_id</b></td></tr>
+<tr class="memdesc:aee23d5bee8bbb5fb93be0bb3f59da154"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID of the parent group (0 for top-level) <br /></td></tr>
 <tr class="memitem:ac219097c665208e88ef0883302c2ff41" id="r_ac219097c665208e88ef0883302c2ff41"><td class="memItemLeft" align="right" valign="top"><a id="ac219097c665208e88ef0883302c2ff41" name="ac219097c665208e88ef0883302c2ff41"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>flags</b></td></tr>
+<tr class="memdesc:ac219097c665208e88ef0883302c2ff41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Display flags for the group (BI_NAMED_GROUP_*) <br /></td></tr>
 <tr class="memitem:a74fe65d4484bd991d15ee24f39fce127" id="r_a74fe65d4484bd991d15ee24f39fce127"><td class="memItemLeft" align="right" valign="top"><a id="a74fe65d4484bd991d15ee24f39fce127" name="a74fe65d4484bd991d15ee24f39fce127"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>group_tag</b></td></tr>
+<tr class="memdesc:a74fe65d4484bd991d15ee24f39fce127"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag namespace used by entries within this group. <br /></td></tr>
 <tr class="memitem:a43185858c6d7079e4d054f0d95b16b6a" id="r_a43185858c6d7079e4d054f0d95b16b6a"><td class="memItemLeft" align="right" valign="top"><a id="a43185858c6d7079e4d054f0d95b16b6a" name="a43185858c6d7079e4d054f0d95b16b6a"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>group_id</b></td></tr>
+<tr class="memdesc:a43185858c6d7079e4d054f0d95b16b6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique identifier for this group. <br /></td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Binary info entry defining a named group of related binary info entries. </p>
+<p>Named groups allow tools to present related binary info entries together under a common label, with configurable display behaviour. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/pico/binary_info/<a class="el" href="structure_8h_source.html">structure.h</a></li>
 </ul>
 </div><!-- contents -->
