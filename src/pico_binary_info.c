@@ -3,12 +3,6 @@
 
 #include "pico_binary_info.h"
 
-// The vendored structure.h uses `uint` in BINARY_INFO_MAKE_TAG; the SDK supplies
-// this typedef, but a standalone/strict build may not, so define it here. (A
-// duplicate, identical typedef is permitted, so this is safe where uint exists.)
-// Remove once the upstream fix lands: https://github.com/raspberrypi/pico-sdk/pull/3029
-typedef unsigned int uint;
-
 // Record markers, types, tags and ids, vendored verbatim from the pico-sdk.
 // We use only the #defines; the structs are unused because we parse fields
 // byte-by-byte to stay endianness-independent.
